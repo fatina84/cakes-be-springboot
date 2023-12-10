@@ -1,24 +1,16 @@
-package com.psw.servizi.model;
+package com.psw.servizi.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.engine.jdbc.SerializableBlobProxy;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "cake")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-public class Cake implements Serializable {
+@Data
+public class Cake {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

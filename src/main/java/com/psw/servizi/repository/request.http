@@ -1,1 +1,35 @@
-DELETE http://localhost:8080/cakes/20
+GET http://localhost:8080/api/cakes
+Accept: application/json
+
+###
+GET http://localhost:8080/api/cakes/4
+Accept: application/json
+
+###
+POST http://localhost:8080/api/cakes
+Content-Type: application/json
+
+{
+  "title" : "Post request 2",
+  "occasion" : "Prova",
+  "description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin risus tortor, \n    condimentum eget sapien ac, dapibus varius ligula. Maecenas justo erat, semper sed nunc vel, \n    vulputate eleifend dui. Integer id ipsum vitae nisi malesuada feugiat. Proin sit amet quam laoreet, \n    feugiat mi vitae, vestibulum dui. Aliquam erat volutpat. Etiam hendrerit erat nec mi auctor elementum. \n    Curabitur vestibulum lectus a ante tempor tincidunt et sed orci. Proin maximus tortor in risus auctor efficitur. \n    Phasellus quam mauris, laoreet et feugiat ac, imperdiet at quam. Nullam sollicitudin nec diam vel finibus."
+}
+
+###
+DELETE http://localhost:8080/api/cakes/20
+
+
+###
+PUT http://localhost:8080/api/cakes/21
+Content-Type: application/json
+
+{
+  "title" : "Put request",
+  "occasion" : "Prova",
+  "description" : "Prova put request using request.http",
+  "weight" : 5.0,
+  "numberportions" : 30,
+  "date" : "2024-12-09T20:40:07.000+00:00",
+  "img" : "let's see"
+}
+

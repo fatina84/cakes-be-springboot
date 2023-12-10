@@ -1,22 +1,18 @@
 package com.psw.servizi.controller;
 
-import com.psw.servizi.model.Cake;
+import com.psw.servizi.entity.Cake;
 import com.psw.servizi.repository.CakeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -25,29 +21,38 @@ public class CakeController {
     @Autowired
     CakeRepository cakeRepository;
 
-    @RequestMapping(value = "/cakes",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    public List<Cake> getCakes() {
+    @GetMapping(value = "/cakes")
+    public List<Cake> getAllCakes() {
         return cakeRepository.findAll();
     }
 
+    @GetMapping("/cakes/{id}")
+    Cake getCakeById(@PathVariable Long id) {
+        return cakeRepository.findById(id).get();
+    }
 
+    @PostMapping("/cakes")
+    Cake addCake(@RequestBody Cake newCake) {
+        return cakeRepository.save(newCake);
+    }
 
-    @RequestMapping(value = "/cakes/{id}",
-            method = RequestMethod.DELETE)
+    @PutMapping("/cakes/{id}")
+    Cake updateCake(@RequestBody Cake updatedCake, @PathVariable Long id) {
+        return cakeRepository.findById(id).map(cake -> {
+            cake.setTitle(updatedCake.getTitle());
+            cake.setOccasion(updatedCake.getOccasion());
+            cake.setDescription(updatedCake.getDescription());
+            return cakeRepository.save(cake);
+        }).orElseGet(() -> {
+            updatedCake.setId(id);
+            return null;
+        });
+    }
+
+    @DeleteMapping("/cakes/{id}")
     @ResponseStatus( HttpStatus.NO_CONTENT )
-    public void deleteCake(@PathVariable("id") Long id ) {
+    void deleteCake(@PathVariable Long id) {
         cakeRepository.deleteById(id);
     }
-
-    @RequestMapping(value = "/cakes", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus( HttpStatus.CREATED )
-    public Cake addCake(@RequestBody Cake cake) {
-        return cakeRepository.save(cake);
-    }
-
 
 }
